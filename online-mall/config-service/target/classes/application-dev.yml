@@ -1,0 +1,98 @@
+#service discovery url
+#eureka:
+#   client:
+#      serviceUrl:
+#           defaultZone: http://localhost:29003/eureka/
+#   instance:
+#       leaseRenewalIntervalInSeconds: 3
+#       leaseExpirationDurationInSeconds: 9
+#service name
+
+db_setting:
+  username: root
+  password:
+  host: localhost
+  port: 3306
+  db: online-mall
+redis_setting:
+  host: localhost
+  password:
+  port: 6380
+
+datasource:
+  setting:
+    driverClassName: com.mysql.cj.jdbc.Driver
+    initialSize : 5
+    maxActive: 500
+    maxWait: 60000
+    minIdle: 64
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: SELECT 1
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements : true
+    maxOpenPreparedStatements: 50
+    removeAbandoned: true
+    removeAbandonedTimeout: 1800
+    logAbandoned: true
+    url: jdbc:mysql://${db_setting.host}:${db_setting.port}/${db_setting.db}?serverTimezone=GMT%2b8&useUnicode=true&characterEncoding=UTF-8&useSSL=false&allowMultiQueries=true
+    username: ${db_setting.username}
+    password: ${db_setting.password}
+
+spring:
+  cloud:
+  #  配置这个之后，本地配置的优先级将优于远程配置
+    config:
+      override-none: true
+
+#baseJedis:
+#   host: ${redis_setting.host}
+#   port: ${redis_setting.port}
+#   password: ${redis_setting.password}
+#   maxTotal: 64
+#   minIdle: 20
+#   timeout: 5000
+#   masters:
+#      - redisMaster
+#   sentinels:
+#      - ${redis_setting.host}:${redis_setting.port}
+#
+#myJedis:
+#   host: ${redis_setting.host}
+#   port: ${redis_setting.port}
+#   password: ${redis_setting.password}
+#   maxTotal: 64
+#   minIdle: 20
+#   timeout: 5000
+#   masters:
+#      - redisMaster
+#   sentinels:
+#      - ${redis_setting.host}:${redis_setting.port}
+
+#management:
+#  security:
+#    enabled: false
+
+threadPool:
+  corePoolSize: 20
+  maxPoolSize: 50
+  queueCapacity: 1000
+  keepAliveSeconds: 60
+
+server:
+  undertow:
+    worker-threads: 500
+
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          strategy: SEMAPHORE
+          semaphore:
+            maxConcurrentRequests: 500 #缺省为10
+        timeout:
+          enabled: false
+

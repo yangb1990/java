@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: shop-service
+  cloud:
+    consul:
+    ##注册中心ip地址
+      host: localhost
+     ##注册中心监听端口
+      port: 8500
+      discovery:
+        register: true
+        ##注册实例id
+        instance-id: shop-service
+    config:
+          discovery:
+            enabled: true
+            service-id: config-service
+          profile: dev
+server:
+     port: 19004
